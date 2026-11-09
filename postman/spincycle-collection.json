@@ -1,0 +1,488 @@
+{
+  "info": {
+    "name": "SpinCycle Bikes API - Group ST-CSE2D-G03",
+    "description": "Comprehensive Postman test collection for SpinCycle Bikes campus bike share API.\nIncludes full CRUD, search, JOIN endpoint, and the Twist tests for 'No duplicate names'.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Root Welcome",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Has endpoints object', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('endpoints');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "1. Bikes",
+      "item": [
+        {
+          "name": "Get all bikes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/bikes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns list of bikes', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.data).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search bikes by type (Query Parameter)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/bikes?type=mountain"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('All bikes match mountain type', () => {",
+                  "  const bikes = pm.response.json().data;",
+                  "  pm.expect(bikes).to.be.an('array');",
+                  "  bikes.forEach(b => pm.expect(b.type.toLowerCase()).to.eql('mountain'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get bike by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/bikes/1"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Has bike fields', () => {",
+                  "  const bike = pm.response.json().data;",
+                  "  pm.expect(bike).to.have.property('id');",
+                  "  pm.expect(bike).to.have.property('name');",
+                  "  pm.expect(bike).to.have.property('type');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create new bike",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/bikes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"City Cruiser 101\",\n  \"type\": \"hybrid\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('tempBikeId', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update bike by ID",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/bikes/{{tempBikeId}}",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"City Cruiser 101 Updated\",\n  \"type\": \"hybrid\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete bike by ID",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/bikes/{{tempBikeId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Validation Error — missing fields",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/bikes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "pm.test('Has error message', () => pm.expect(pm.response.json()).to.have.property('error'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Riders",
+      "item": [
+        {
+          "name": "Get all riders",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/riders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get rider by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/riders/1"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create new rider",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/riders",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Diana Prince\",\n  \"email\": \"diana@campus.edu\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('tempRiderId', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete rider by ID",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/riders/{{tempRiderId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Rentals & JOIN Endpoint",
+      "item": [
+        {
+          "name": "Get all rentals",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rentals"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "JOIN — Rental Details (Rider + Bike Names)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rentals/details"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Contains joined rider and bike names', () => {",
+                  "  const list = pm.response.json().data;",
+                  "  pm.expect(list).to.be.an('array');",
+                  "  if (list.length > 0) {",
+                  "    pm.expect(list[0]).to.have.property('rider_name');",
+                  "    pm.expect(list[0]).to.have.property('bike_name');",
+                  "    pm.expect(list[0]).to.have.property('rented_at');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create new rental",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/rentals",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rider_id\": 1,\n  \"bike_id\": 2\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('tempRentalId', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Return / update rental",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/rentals/{{tempRentalId}}",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returned_at\": \"2026-11-09 17:00:00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete rental",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/rentals/{{tempRentalId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Twist Tests — No Duplicate Bike Names",
+      "item": [
+        {
+          "name": "TWIST Test 1: Add Bike 7 -> 201 Created",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/bikes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bike 7\",\n  \"type\": \"road\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('TWIST Test 1: Status 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Bike 7 created', () => {",
+                  "  pm.expect(pm.response.json().data.name).to.eql('Bike 7');",
+                  "});",
+                  "pm.collectionVariables.set('bike7Id', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TWIST Test 2: Add 'bike 7' -> 409 Conflict",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/bikes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"bike 7\",\n  \"type\": \"hybrid\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('TWIST Test 2: Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "pm.test('Message: Bike 7 already exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  const msg = json.message || json.error;",
+                  "  pm.expect(msg).to.eql('Bike 7 already exists');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TWIST Test 3: Rename another to 'bike 7' -> 409 Conflict",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/bikes/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"bike 7\",\n  \"type\": \"mountain\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('TWIST Test 3: Status 409 Conflict on rename', () => pm.response.to.have.status(409));",
+                  "pm.test('Message: Bike 7 already exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  const msg = json.message || json.error;",
+                  "  pm.expect(msg).to.eql('Bike 7 already exists');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cleanup Bike 7",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/bikes/{{bike7Id}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK — Cleanup', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

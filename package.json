@@ -1,23 +1,24 @@
 {
-  "name": "spincycle-bikes",
+  "name": "spincycle-bikes-api",
   "version": "1.0.0",
-  "description": "SpinCycle Bikes - Campus bike share REST API",
-  "main": "server.js",
+  "description": "SpinCycle Bikes - Campus Bike Share API with No Duplicate Bike Names Twist",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node -e \"require('./src/config/database.js')\"",
     "test": "node test.js"
   },
   "keywords": [
     "express",
     "sqlite",
-    "rest-api",
-    "bikes"
+    "bike-share",
+    "rest-api"
   ],
   "author": "Group 3 - CSE2D",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.22.3"
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
