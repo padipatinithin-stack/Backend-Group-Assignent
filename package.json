@@ -17,6 +17,9 @@
   ],
   "author": "Group 3 - CSE2D",
   "license": "ISC",
+  "engines": {
+    "node": ">=22.x"
+  },
   "dependencies": {
     "express": "^4.19.2"
   },
