@@ -12,11 +12,11 @@
 
 | Branch | Roll No | Team Member | Responsibility |
 |---|---|---|---|
-| `feature/server-routes` | **1187** | **Pavan** | Express server setup, middleware, and modular routes (`src/server.js`, `src/routes/`) |
-| `feature/database` | **1184** | **Vinod** | SQLite database connection (`src/config/database.js`), schema (`schema.sql`), and seed data (`seed.sql`) |
-| `feature/rest-endpoints` | **1181** | **Manikanta** | CRUD endpoints for bikes, riders, rentals, and the JOIN endpoint (`src/controllers/`) |
-| `feature/validation-search` | **1168** | **Surya Prakash** | Input validation on add/update, type query search, and error handling |
-| `feature/twist-postman-docs` | **1173** | **Nithin** | "No duplicate names" twist rule enforcement, Postman collection, and documentation |
+| `feature/server-routes` | **252U1R1187** | **Pavan** | Express server setup, middleware, and modular routes (`src/server.js`, `src/routes/`) |
+| `feature/database` | **252U1R1184** | **Vinod** | SQLite database connection (`src/config/database.js`), schema (`schema.sql`), and seed data (`seed.sql`) |
+| `feature/rest-endpoints` | **252U1R1181** | **Manikanta** | CRUD endpoints for bikes, riders, rentals, and the JOIN endpoint (`src/controllers/`) |
+| `feature/validation-search` | **252U1R1168** | **Surya Prakash** | Input validation on add/update, type query search, and error handling |
+| `feature/twist-postman-docs` | **252U1R1173** | **Nithin** | "No duplicate names" twist rule enforcement, Postman collection, and documentation |
 | `main` | **All** | **All Members** | Final integration, end-to-end verification, and demo preparation |
 
 ---
