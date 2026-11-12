@@ -14,13 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
-    message: 'Welcome to SpinCycle Bikes API 🚲',
-    endpoints: {
-      bikes: '/api/bikes',
-      riders: '/api/riders',
-      rentals: '/api/rentals',
-      rental_details_join: '/api/rentals/details'
-    }
+    message: 'Welcome to SpinCycle Bikes API'
   });
 });
 

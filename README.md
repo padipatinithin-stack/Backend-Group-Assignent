@@ -98,10 +98,22 @@ npm run seed
   ```
 The API is available at: `http://localhost:3000`
 
-### 4. Run Automated Tests
-```bash
-npm test
-```
+### 4. Deploy to Render (Live URL like `onrender.com`)
+1. Push your code to GitHub:
+   ```bash
+   git add .
+   git commit -m "Update API format to match standard output"
+   git push origin main
+   ```
+2. Go to [render.com](https://render.com) and create a **New Web Service**.
+3. Connect your repository `Backend-Group-Assignent`.
+4. Configure settings:
+   - **Name**: `spincycle-bikes-api-lg03` (or your preferred name)
+   - **Environment**: `Node`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+5. Click **Deploy Web Service**. You will get a live URL such as:
+   `https://spincycle-bikes-api-lg03.onrender.com`
 
 ---
 
