@@ -1,6 +1,7 @@
 # SpinCycle Bikes - Campus Bike Share API
 
-> **Backend Development Fundamentals (BDF)** | Theme 3 of 30: Campus Bike Share | Group ST-CSE2D-G03 (LG-3)
+> **Backend Development Fundamentals (BDF)** | Theme 3 of 30: Campus Bike Share | Group ST-CSE2D-G03 (LG-3)  
+> 🌐 **Live API URL:** [https://backend-group-assignent.vercel.app](https://backend-group-assignent.vercel.app/)
 
 ## Client Brief
 > *"Students sign a notebook to take our bikes. Bikes go missing for days and nobody can say who rode them last. Please build us a system that fixes this."*
@@ -98,22 +99,18 @@ npm run seed
   ```
 The API is available at: `http://localhost:3000`
 
-### 4. Deploy to Render (Live URL like `onrender.com`)
-1. Push your code to GitHub:
-   ```bash
-   git add .
-   git commit -m "Update API format to match standard output"
-   git push origin main
-   ```
-2. Go to [render.com](https://render.com) and create a **New Web Service**.
-3. Connect your repository `Backend-Group-Assignent`.
-4. Configure settings:
-   - **Name**: `spincycle-bikes-api-lg03` (or your preferred name)
-   - **Environment**: `Node`
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-5. Click **Deploy Web Service**. You will get a live URL such as:
-   `https://spincycle-bikes-api-lg03.onrender.com`
+### 4. Live Deployment (Vercel)
+The API is deployed live on Vercel:
+- **Base URL:** [https://backend-group-assignent.vercel.app](https://backend-group-assignent.vercel.app/)
+- **Bikes Endpoint:** [https://backend-group-assignent.vercel.app/api/bikes](https://backend-group-assignent.vercel.app/api/bikes)
+- **Riders Endpoint:** [https://backend-group-assignent.vercel.app/api/riders](https://backend-group-assignent.vercel.app/api/riders)
+- **Rentals Endpoint:** [https://backend-group-assignent.vercel.app/api/rentals](https://backend-group-assignent.vercel.app/api/rentals)
+- **Join Details Endpoint:** [https://backend-group-assignent.vercel.app/api/rentals/details](https://backend-group-assignent.vercel.app/api/rentals/details)
+
+#### How Deployment Works on Vercel:
+- Configured via `vercel.json` with rewrites pointing to `/api/index.js` (Serverless handler wrapping Express).
+- Automatic deployments trigger on every `git push` to `main`.
+- SQLite database runs in `os.tmpdir()` to support serverless read/write execution.
 
 ---
 
