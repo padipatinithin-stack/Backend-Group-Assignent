@@ -1,6 +1,6 @@
 # SpinCycle Bikes - Campus Bike Share API
 
-> **Backend Development Fundamentals (BDF)** | Theme 3 of 30: Campus Bike Share | Group ST-CSE2D-G03 (LG-3)  
+> **Backend Development Fundamentals (BDF)**| Theme 3 of 30: Campus Bike Share | Group ST-CSE2D-G03 (LG-3)  
 > 🌐 **Live API URL:** [https://backend-group-assignent.vercel.app](https://backend-group-assignent.vercel.app/)
 
 ## Client Brief
