@@ -9,7 +9,7 @@
 
 ## Team Members & Responsibilities (Group LG-3)
 
-| Branch | Roll No | Team Member | Responsibility |
+| Branch | Roll No | Team Member | Responsibility | 
 |---|---|---|---|
 | `feature/server-routes` | **1187** | **Pavan** | Express server setup, middleware, and modular routes (`src/server.js`, `src/routes/`) |
 | `feature/database` | **1184** | **Vinod** | SQLite database connection (`src/config/database.js`), schema (`schema.sql`), and seed data (`seed.sql`) |
